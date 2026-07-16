@@ -1,6 +1,6 @@
 {
   "name": "react-email-viewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Production-ready React component for rendering Outlook (.msg) and RFC822 (.eml) emails — Base64, Blob, File, ArrayBuffer, URL, attachments, themes, and search.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -52,7 +52,14 @@
     "attachments",
     "typescript",
     "nextjs",
-    "viewer"
+    "viewer",
+    "email-renderer",
+    "msg-viewer",
+    "eml-viewer",
+    "outlook-viewer",
+    "react-component",
+    "mail",
+    "preview"
   ],
   "author": "Anil Kumar <anilachary67@gmail.com>",
   "license": "MIT",

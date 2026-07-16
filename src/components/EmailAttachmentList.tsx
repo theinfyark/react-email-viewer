@@ -1,6 +1,6 @@
-import { useState } from "react";
-import type { EmailAttachment } from "../types.js";
-import { AttachmentCard } from "./AttachmentCard.js";
+import { useState } from 'react';
+import type { EmailAttachment } from '../types.js';
+import { AttachmentCard } from './AttachmentCard.js';
 
 export interface EmailAttachmentListProps {
   attachments: EmailAttachment[];
@@ -45,7 +45,7 @@ export function EmailAttachmentList({
             setPreviewUrl(null);
           }}
         >
-          {previewUrl.includes("pdf") || previewUrl ? (
+          {previewUrl.includes('pdf') || previewUrl ? (
             // Prefer image tag when possible; iframe for pdf/text blob urls
             previewUrl.match(/image|\.png|\.jpe?g|\.gif|\.webp/i) ? (
               <img src={previewUrl} alt="Attachment preview" />
@@ -54,9 +54,9 @@ export function EmailAttachmentList({
                 title="Attachment preview"
                 src={previewUrl}
                 style={{
-                  width: "min(96vw, 1000px)",
-                  height: "85vh",
-                  background: "#fff",
+                  width: 'min(96vw, 1000px)',
+                  height: '85vh',
+                  background: '#fff',
                   border: 0,
                   borderRadius: 8,
                 }}

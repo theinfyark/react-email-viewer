@@ -7,10 +7,10 @@
 Pass Base64, binary, `Blob`, `File`, `ArrayBuffer`, `Uint8Array`, `Response`, or a URL — get an Outlook/Gmail-style preview with headers, HTML/text body, attachments, themes, and search.
 
 ```tsx
-import { EmailViewer } from "react-email-viewer";
-import "react-email-viewer/styles.css";
+import { EmailViewer } from 'react-email-viewer';
+import 'react-email-viewer/styles.css';
 
-<EmailViewer source={base64OrFileOrBuffer} />
+<EmailViewer source={base64OrFileOrBuffer} />;
 ```
 
 Works with **TypeScript and JavaScript** (ESM + CommonJS + `.d.ts`).
@@ -52,8 +52,8 @@ Requires Node.js 18+ for tooling; the viewer runs in modern browsers.
 ### TypeScript
 
 ```tsx
-import { EmailViewer } from "react-email-viewer";
-import "react-email-viewer/styles.css";
+import { EmailViewer } from 'react-email-viewer';
+import 'react-email-viewer/styles.css';
 
 export function App({ payload }: { payload: string }) {
   return (
@@ -70,8 +70,8 @@ export function App({ payload }: { payload: string }) {
 ### JavaScript
 
 ```jsx
-import { EmailViewer } from "react-email-viewer";
-import "react-email-viewer/styles.css";
+import { EmailViewer } from 'react-email-viewer';
+import 'react-email-viewer/styles.css';
 
 export function App({ file }) {
   return <EmailViewer source={file} theme="light" />;
@@ -99,23 +99,23 @@ export function App({ file }) {
 
 ### `<EmailViewer />`
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `source` | `string \| Blob \| File \| ArrayBuffer \| Uint8Array \| Response` | — | Email payload |
-| `url` | `string` | — | Fetch email via GET |
-| `format` | `"eml" \| "msg" \| "auto"` | `"auto"` | Force parser |
-| `theme` | `"light" \| "dark" \| "auto"` | `"auto"` | Color theme |
-| `renderMode` | `"html" \| "text" \| "auto"` | `"auto"` | Body mode |
-| `showToolbar` | `boolean` | `true` | Toolbar visibility |
-| `showAttachments` | `boolean` | `true` | Attachment list |
-| `allowExternalImages` | `boolean` | `true` | Block remote `<img>` when false |
-| `zoom` | `number` | `100` | Initial zoom % |
-| `hideBcc` | `boolean` | `false` | Hide BCC row |
-| `onLoad` | `(email) => void` | — | Parsed callback |
-| `onError` | `(error) => void` | — | Error callback |
-| `onDownloadAttachment` | `(att) => void` | — | Download hook |
-| `className` / `style` | — | — | Root customization |
-| `emptyLabel` / `loadingLabel` | `string` | — | Status copy |
+| Prop                          | Type                                                              | Default  | Description                     |
+| ----------------------------- | ----------------------------------------------------------------- | -------- | ------------------------------- |
+| `source`                      | `string \| Blob \| File \| ArrayBuffer \| Uint8Array \| Response` | —        | Email payload                   |
+| `url`                         | `string`                                                          | —        | Fetch email via GET             |
+| `format`                      | `"eml" \| "msg" \| "auto"`                                        | `"auto"` | Force parser                    |
+| `theme`                       | `"light" \| "dark" \| "auto"`                                     | `"auto"` | Color theme                     |
+| `renderMode`                  | `"html" \| "text" \| "auto"`                                      | `"auto"` | Body mode                       |
+| `showToolbar`                 | `boolean`                                                         | `true`   | Toolbar visibility              |
+| `showAttachments`             | `boolean`                                                         | `true`   | Attachment list                 |
+| `allowExternalImages`         | `boolean`                                                         | `true`   | Block remote `<img>` when false |
+| `zoom`                        | `number`                                                          | `100`    | Initial zoom %                  |
+| `hideBcc`                     | `boolean`                                                         | `false`  | Hide BCC row                    |
+| `onLoad`                      | `(email) => void`                                                 | —        | Parsed callback                 |
+| `onError`                     | `(error) => void`                                                 | —        | Error callback                  |
+| `onDownloadAttachment`        | `(att) => void`                                                   | —        | Download hook                   |
+| `className` / `style`         | —                                                                 | —        | Root customization              |
+| `emptyLabel` / `loadingLabel` | `string`                                                          | —        | Status copy                     |
 
 ### `parseEmail(options)` / `parseEml` / `parseMsg`
 
@@ -141,15 +141,15 @@ Hook returning `{ email, loading, error }`.
 
 ```tsx
 const buf = await file.arrayBuffer();
-<EmailViewer source={buf} />
+<EmailViewer source={buf} />;
 ```
 
 ### Next.js (App Router)
 
 ```tsx
-"use client";
-import { EmailViewer } from "react-email-viewer";
-import "react-email-viewer/styles.css";
+'use client';
+import { EmailViewer } from 'react-email-viewer';
+import 'react-email-viewer/styles.css';
 ```
 
 Mark the importing module as a Client Component — the package ships a `"use client"` banner for bundlers that honor it.
@@ -173,7 +173,7 @@ Mark the importing module as a Client Component — the package ships a `"use cl
 ### Headless parse + custom UI
 
 ```tsx
-const email = await parseEmail({ source: bytes, format: "eml" });
+const email = await parseEmail({ source: bytes, format: 'eml' });
 ```
 
 ### Block external images
@@ -195,16 +195,13 @@ import type {
   EmailAttachment,
   Theme,
   RenderMode,
-} from "react-email-viewer";
+} from 'react-email-viewer';
 ```
 
 ## Error Handling
 
 ```tsx
-<EmailViewer
-  source={source}
-  onError={(err) => toast.error(err.message)}
-/>
+<EmailViewer source={source} onError={(err) => toast.error(err.message)} />
 ```
 
 Invalid MIME / corrupt MSG surfaces as a visible error region (`role="alert"`).
@@ -218,7 +215,7 @@ Invalid MIME / corrupt MSG surfaces as a visible error region (`role="alert"`).
 
 ## Best Practices
 
-- Sanitize is basic (script/on* stripping); for untrusted mail consider an additional HTML sanitizer
+- Sanitize is basic (script/on\* stripping); for untrusted mail consider an additional HTML sanitizer
 - Keep `allowExternalImages={false}` when previewing untrusted mail
 - Don’t log full email bodies in production analytics
 - Use `format="msg"` when filename/magic is unreliable
@@ -257,13 +254,13 @@ Breaking changes only in major versions — see `CHANGELOG.md`.
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|---------|-----|
-| No styles | `import "react-email-viewer/styles.css"` |
-| Blank MSG | Ensure bytes are full OLE file; try `format="msg"` |
-| CID images missing | Confirm Content-ID attachments parsed; check HTML `cid:` refs |
-| Next.js window errors | Use Client Component |
-| Types missing | TS 5+, `moduleResolution` bundler/node16+ |
+| Symptom               | Fix                                                           |
+| --------------------- | ------------------------------------------------------------- |
+| No styles             | `import "react-email-viewer/styles.css"`                      |
+| Blank MSG             | Ensure bytes are full OLE file; try `format="msg"`            |
+| CID images missing    | Confirm Content-ID attachments parsed; check HTML `cid:` refs |
+| Next.js window errors | Use Client Component                                          |
+| Types missing         | TS 5+, `moduleResolution` bundler/node16+                     |
 
 ## Browser Support
 
