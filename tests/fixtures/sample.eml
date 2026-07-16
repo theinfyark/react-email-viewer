@@ -1,0 +1,43 @@
+From: Alice Sender <alice@example.com>
+To: Bob Receiver <bob@example.com>
+Cc: Carol <carol@example.com>
+Subject: Hello from react-email-viewer
+Date: Wed, 16 Jul 2026 10:00:00 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+X-Priority: 1
+Importance: High
+Keywords: demo,test
+
+--boundary42
+Content-Type: text/plain; charset="utf-8"
+
+Hello Bob,
+
+This is a plain text body for testing.
+
+--boundary42
+Content-Type: text/html; charset="utf-8"
+
+<html><body>
+  <h1>Hello Bob</h1>
+  <p>This is an <strong>HTML</strong> body for testing.</p>
+  <p><img src="cid:logo@example.com" alt="logo" /></p>
+</body></html>
+
+--boundary42
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-ID: <logo@example.com>
+Content-Disposition: inline; filename="logo.png"
+
+iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==
+
+--boundary42
+Content-Type: application/pdf
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="notes.pdf"
+
+JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDIgMCBSL01lZGlhQm94WzAgMCA2MTIgNzkyXS9Db250ZW50cyA0IDAgUj4+CmVuZG9iago=
+
+--boundary42--
