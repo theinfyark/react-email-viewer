@@ -67,7 +67,7 @@ export interface EmailViewerProps {
   showToolbar?: boolean;
   /** Show attachment list. Default: true */
   showAttachments?: boolean;
-  /** Allow external images in HTML. Default: true */
+  /** Allow external images in HTML. Default: false (safer for untrusted mail) */
   allowExternalImages?: boolean;
   /** Initial zoom percent. Default: 100 */
   zoom?: number;

@@ -23,6 +23,8 @@ export {
 export type { ParseEmailOptions } from "./parse/index.js";
 
 export { useEmail } from "./hooks/useEmail.js";
+export { sanitizeHtml } from "./utils/sanitize-html.js";
+export type { FetchUrlOptions } from "./parse/resolve-source.js";
 
 export type {
   Theme,

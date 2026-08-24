@@ -1,5 +1,10 @@
 import type { EmailFormat, EmailSource, ParsedEmail } from "../types.js";
-import { detectFormat, fetchUrlToBytes, resolveSourceToBytes } from "./resolve-source.js";
+import {
+  detectFormat,
+  fetchUrlToBytes,
+  resolveSourceToBytes,
+  type FetchUrlOptions,
+} from "./resolve-source.js";
 import { parseEml } from "./parse-eml.js";
 import { parseMsg } from "./parse-msg.js";
 
@@ -8,6 +13,7 @@ export interface ParseEmailOptions {
   url?: string;
   format?: EmailFormat;
   filename?: string;
+  fetch?: FetchUrlOptions;
 }
 
 export async function parseEmail(
@@ -22,7 +28,7 @@ export async function parseEmail(
     }
     bytes = await resolveSourceToBytes(options.source);
   } else if (options.url) {
-    bytes = await fetchUrlToBytes(options.url);
+    bytes = await fetchUrlToBytes(options.url, options.fetch);
   } else {
     throw new Error("Provide either `source` or `url`");
   }
@@ -32,4 +38,11 @@ export async function parseEmail(
   return parseEml(bytes);
 }
 
-export { parseEml, parseMsg, resolveSourceToBytes, fetchUrlToBytes, detectFormat };
+export {
+  parseEml,
+  parseMsg,
+  resolveSourceToBytes,
+  fetchUrlToBytes,
+  detectFormat,
+};
+export type { FetchUrlOptions };

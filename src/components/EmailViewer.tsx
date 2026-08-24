@@ -17,7 +17,7 @@ export function EmailViewer({
   style,
   showToolbar = true,
   showAttachments = true,
-  allowExternalImages = true,
+  allowExternalImages = false,
   zoom: initialZoom = 100,
   onLoad,
   onError,

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { ParsedEmail, RenderMode } from "../types.js";
 import { highlightText } from "../utils/format.js";
+import { sanitizeHtml } from "../utils/sanitize-html.js";
 
 export interface EmailBodyProps {
   email: ParsedEmail;
@@ -15,7 +16,7 @@ export function EmailBody({
   renderMode = "auto",
   zoom = 100,
   searchQuery = "",
-  allowExternalImages = true,
+  allowExternalImages = false,
 }: EmailBodyProps) {
   const [lightbox, setLightbox] = useState<string | null>(null);
 
@@ -59,7 +60,7 @@ export function EmailBody({
         <div
           className="rev-body-html"
           style={{ transform: `scale(${zoom / 100})`, width: `${10000 / zoom}%` }}
-          // Email HTML is untrusted; sanitize lightly for script tags
+          // Email HTML is untrusted; allowlist-sanitized before render
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }}
           onClick={(e) => {
             const t = e.target as HTMLElement;
@@ -104,12 +105,4 @@ function escapeHtml(text: string): string {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
-}
-
-function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-    .replace(/\son\w+=(["']).*?\1/gi, "")
-    .replace(/\son\w+=\S+/gi, "")
-    .replace(/javascript:/gi, "");
 }

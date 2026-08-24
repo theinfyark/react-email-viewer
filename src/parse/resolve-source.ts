@@ -54,12 +54,59 @@ export async function resolveSourceToBytes(
   throw new Error("Unsupported email source type");
 }
 
-export async function fetchUrlToBytes(url: string): Promise<Uint8Array> {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch email: HTTP ${res.status}`);
+const PRIVATE_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1"]);
+
+function isPrivateHostname(hostname: string): boolean {
+  const host = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  if (PRIVATE_HOSTS.has(host)) return true;
+  if (host.endsWith(".localhost") || host.endsWith(".local")) return true;
+  if (/^(10\.|192\.168\.|127\.|169\.254\.)/.test(host)) return true;
+  if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)) return true;
+  return false;
+}
+
+export interface FetchUrlOptions {
+  /** When set, only these hostnames are allowed. */
+  allowedHosts?: string[];
+  /** Allow RFC1918 / loopback hosts. Default: false. */
+  allowPrivateNetwork?: boolean;
+  timeoutMs?: number;
+}
+
+export async function fetchUrlToBytes(
+  url: string,
+  options: FetchUrlOptions = {},
+): Promise<Uint8Array> {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error("Invalid email URL");
   }
-  return new Uint8Array(await res.arrayBuffer());
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("Only http(s) URLs are allowed");
+  }
+  if (
+    options.allowedHosts?.length &&
+    !options.allowedHosts.includes(parsed.hostname)
+  ) {
+    throw new Error(`Host not allowed: ${parsed.hostname}`);
+  }
+  if (!options.allowPrivateNetwork && isPrivateHostname(parsed.hostname)) {
+    throw new Error("Private network URLs are not allowed");
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), options.timeoutMs ?? 15_000);
+  try {
+    const res = await fetch(url, { redirect: "error", signal: controller.signal });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch email: HTTP ${res.status}`);
+    }
+    return new Uint8Array(await res.arrayBuffer());
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export function detectFormat(

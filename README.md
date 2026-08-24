@@ -108,7 +108,7 @@ export function App({ file }) {
 | `renderMode`                  | `"html" \| "text" \| "auto"`                                      | `"auto"` | Body mode                       |
 | `showToolbar`                 | `boolean`                                                         | `true`   | Toolbar visibility              |
 | `showAttachments`             | `boolean`                                                         | `true`   | Attachment list                 |
-| `allowExternalImages`         | `boolean`                                                         | `true`   | Block remote `<img>` when false |
+| `allowExternalImages`         | `boolean`                                                         | `false`  | Allow remote `<img>` (off by default) |
 | `zoom`                        | `number`                                                          | `100`    | Initial zoom %                  |
 | `hideBcc`                     | `boolean`                                                         | `false`  | Hide BCC row                    |
 | `onLoad`                      | `(email) => void`                                                 | —        | Parsed callback                 |
