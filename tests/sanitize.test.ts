@@ -28,6 +28,15 @@ describe("sanitizeHtml", () => {
     expect(clean).toContain('href="https://example.com"');
     expect(clean).toContain('src="cid:logo"');
   });
+
+  it("blocks dangerous URI schemes including data: on links", () => {
+    const dirty =
+      `<a href="data:text/html,<script>alert(1)</script>">x</a><a href="blob:https://evil">y</a>`;
+    const clean = sanitizeHtml(dirty);
+    expect(clean).not.toMatch(/data:/i);
+    expect(clean).not.toMatch(/blob:/i);
+    expect(clean).toContain("<a>x</a>");
+  });
 });
 
 describe("fetchUrlToBytes", () => {

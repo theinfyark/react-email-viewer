@@ -56,23 +56,39 @@ function decodeAttr(value: string): string {
     .replace(/&gt;/g, ">");
 }
 
+const BLOCKED_SCHEMES = new Set([
+  "javascript",
+  "vbscript",
+  "file",
+  "blob",
+  "about",
+]);
+
+function extractScheme(value: string): string | null {
+  const match = value.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):/);
+  return match ? match[1]!.toLowerCase() : null;
+}
+
 function isSafeUrl(raw: string, kind: "href" | "src"): boolean {
   const value = decodeAttr(raw).trim().replace(/[\u0000-\u001f\s]/g, "");
-  const lower = value.toLowerCase();
-  if (
-    lower.startsWith("javascript:") ||
-    lower.startsWith("vbscript:") ||
-    lower.startsWith("file:") ||
-    lower.startsWith("data:text")
-  ) {
-    return false;
-  }
+  if (!value) return false;
+
   if (kind === "src") {
     return /^(https?:\/\/|cid:|data:image\/(?:png|jpe?g|gif|webp|bmp);base64,)/i.test(
       value,
     );
   }
-  return /^(https?:\/\/|mailto:|cid:|#)/i.test(value);
+
+  if (/^(https?:\/\/|mailto:|cid:|#)/i.test(value)) return true;
+
+  const scheme = extractScheme(value);
+  if (!scheme) {
+    // Relative URLs without a scheme (e.g. /path, ./file)
+    return !value.includes(":");
+  }
+  if (BLOCKED_SCHEMES.has(scheme)) return false;
+  if (scheme === "data") return false;
+  return scheme === "http" || scheme === "https" || scheme === "mailto";
 }
 
 /**
